@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <!-- Contenido específico de portfolio.html -->
+    <!-- Por ejemplo, puedes mostrar la información del portfolio -->
+    <h2>{{ portfolio.title }}</h2>
+    <p>{{ portfolio.description }}</p>
+    <!-- Iterate over portfolio items -->
+    {% for item in portfolio.items.all %}
+        <div>
+            <img src="{{ item.image.url }}" alt="{{ item.caption }}">
+            <p>{{ item.caption }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}

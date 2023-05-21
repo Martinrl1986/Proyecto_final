@@ -1,9 +1,12 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 
 {% block content %}
-  <h1>Search (Busqueda)</h1>
-  <form method="GET" action="{% url 'search' %}">
-    <input type="text" name="query" placeholder="Buscar">
-    <button type="submit">Buscar</button>
-  </form>
+<h1>Resultados de búsqueda</h1>
+<ul>
+    {% for result in results %}
+    <li>{{ result.caption }}</li>
+    {% empty %}
+    <li>No se encontraron resultados</li>
+    {% endfor %}
+</ul>
 {% endblock %}

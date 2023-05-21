@@ -36,3 +36,30 @@ class SearchForm(models.Model):
     def __str__(self):
         return self.query
     
+class Portfolio(models.Model):
+    # Campos
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    items = models.ManyToManyField('PortfolioItem')
+
+    def __str__(self):
+        return self.title
+
+
+class About(models.Model):
+    # Campos
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.title
+
+
+class Contact(models.Model):
+    # Campos
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    address = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.email

@@ -15,16 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from blogapp import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from perfiles.views import registro, index
-from perfiles.views import search
+from perfiles.views import registro, index, search, portfolio, about, contact
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, name="index"),
-    path('perfiles/', include("perfiles.urls")),
-    path('registro/', registro, name="registro"),
-    path('search/', search, name='search'),
+    path('', views.index, name='index'),
+    path('registro/', views.registro, name='registro'),
+    path('search/', views.search, name='search'),
+    path('portfolio/', views.portfolio, name='portfolio'),
+    path('about/', views.about, name='about'),
+    path('contact/', views.contact, name='contact'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
