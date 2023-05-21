@@ -1,8 +1,5 @@
 from django.db import models
 
-# Create your models here.
-from django.db import models
-
 class PortfolioItem(models.Model):
     # Campos
     image = models.ImageField(upload_to='portfolio')
@@ -31,3 +28,11 @@ class SocialLink(models.Model):
 
     def __str__(self):
         return self.name
+
+class SearchForm(models.Model):
+    query = models.CharField(max_length=200)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.query
+    

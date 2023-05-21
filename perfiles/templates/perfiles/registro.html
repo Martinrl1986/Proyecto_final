@@ -1,6 +1,11 @@
-<h2>Registro de usuario</h2>
-<form method="POST">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Registrar</button>
-</form>
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Formulario de Contacto</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {{ form.errors }}
+    <input type="submit" value="Enviar">
+  </form>
+{% endblock %}

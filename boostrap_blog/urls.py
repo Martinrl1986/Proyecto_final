@@ -16,16 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from perfiles.views import registro
-
-from blogapp import views
+from perfiles.views import registro, index
+from perfiles.views import search
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index),
+    path('', index, name="index"),
     path('perfiles/', include("perfiles.urls")),
     path('registro/', registro, name="registro"),
+    path('search/', search, name='search'),
 ]
+
+urlpatterns += staticfiles_urlpatterns()
+
 
 urlpatterns += staticfiles_urlpatterns()
 
