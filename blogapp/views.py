@@ -7,19 +7,19 @@ from boostrap_blog.forms import AboutForm
 from blogapp.models import PortfolioItem
 from boostrap_blog.forms import SearchForm
 
-def index(request):
+def base(request):
     if request.method == "POST":
         formulario = UserRegisterForm(request.POST)
 
         if formulario.is_valid():
             formulario.save()
-            url_exitosa = reverse('index')
+            url_exitosa = reverse('base')
             return redirect(url_exitosa)
     else:  # GET
         formulario = UserRegisterForm()
     return render(
         request=request,
-        template_name='perfiles/index.html',
+        template_name='blogapp/base.html',
         context={'form': formulario},
     )
 
@@ -29,13 +29,13 @@ def registro(request):
 
         if formulario.is_valid():
             formulario.save()
-            url_exitosa = reverse('index')
+            url_exitosa = reverse('base')
             return redirect(url_exitosa)
     else:  # GET
         formulario = UserRegisterForm()
     return render(
         request=request,
-        template_name='perfiles/registro.html',
+        template_name='blogapp/registro.html',
         context={'form': formulario},
     )
 

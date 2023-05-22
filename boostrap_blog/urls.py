@@ -17,11 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 from blogapp import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from perfiles.views import registro, index, search, portfolio, about, contact
+from blogapp.views import registro, base, search, portfolio, about, contact
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name='index'),
+    path('', views.base, name='base'),
     path('registro/', views.registro, name='registro'),
     path('search/', views.search, name='search'),
     path('portfolio/', views.portfolio, name='portfolio'),
