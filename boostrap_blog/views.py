@@ -19,7 +19,7 @@ def base(request):
         formulario = UserRegisterForm()
     return render(
         request=request,
-        template_name='blogapp/base.html',
+        template_name='templates/base.html',
         context={'form': formulario},
     )
 
@@ -35,7 +35,7 @@ def registro(request):
         formulario = UserRegisterForm()
     return render(
         request=request,
-        template_name='blogapp/registro.html',
+        template_name='templates/registro.html',
         context={'form': formulario},
     )
 

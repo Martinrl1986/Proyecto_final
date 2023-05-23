@@ -60,7 +60,9 @@ ROOT_URLCONF = 'boostrap_blog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,9 +71,13 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'my_templatetags': 'blogapp.templatetags.my_templatetags',
+            },
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'boostrap_blog.wsgi.application'
 
