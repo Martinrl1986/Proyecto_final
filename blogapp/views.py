@@ -4,8 +4,10 @@ from boostrap_blog.forms import UserRegisterForm
 from boostrap_blog.forms import PortfolioItem
 from boostrap_blog.forms import ContactMessage
 from boostrap_blog.forms import AboutForm
+from django.contrib.auth import login, authenticate
 from blogapp.models import PortfolioItem
 from boostrap_blog.forms import SearchForm
+from boostrap_blog.forms import SignUpForm
 
 def base(request):
     if request.method == "POST":
@@ -75,3 +77,30 @@ def contact(request):
         return render(request, 'contact.html', {'success_message': 'Message sent successfully!'})
     else:
         return render(request, 'contact.html')
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect('base')
+    else:
+        form = SignUpForm()
+    return render(request, 'signup.html', {'form': form})
+
+def login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('base')
+        else:
+            return render(request, 'login.html', {'error_message': 'Invalid username or password.'})
+    else:
+        return render(request, 'login.html')

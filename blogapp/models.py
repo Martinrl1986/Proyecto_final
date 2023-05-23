@@ -1,5 +1,6 @@
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.utils.translation import gettext_lazy as _
 class PortfolioItem(models.Model):
     # Campos
     image = models.ImageField(upload_to='portfolio')
@@ -63,3 +64,34 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.email
+    
+class CustomUser(AbstractUser):
+    # Atributos adicionales para tu modelo CustomUser
+
+    # Relación many-to-many con Group utilizando el modelo intermedio CustomUserGroup
+    groups = models.ManyToManyField(Group, through='CustomUserGroup', related_name='custom_users', blank=True)
+
+    # Relación many-to-many con Permission utilizando el modelo intermedio CustomUserPermission
+    user_permissions = models.ManyToManyField(Permission, through='CustomUserPermission', related_name='custom_users', blank=True)
+
+    class Meta:
+        # Otras opciones de configuración del modelo
+        pass
+
+# Modelo intermedio para la relación many-to-many entre CustomUser y Group
+class CustomUserGroup(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+
+    class Meta:
+        # Otras opciones de configuración del modelo
+        pass
+
+# Modelo intermedio para la relación many-to-many entre CustomUser y Permission
+class CustomUserPermission(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    permission = models.ForeignKey(Permission, on_delete=models.CASCADE)
+
+    class Meta:
+        # Otras opciones de configuración del modelo
+        pass

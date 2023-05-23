@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from blogapp.models import PortfolioItem, ContactMessage, SocialLink, SearchForm
+from blogapp.models import CustomUser
 from blogapp.models import About
 
 class PortfolioItemForm(forms.ModelForm):
@@ -14,10 +14,6 @@ class ContactMessageForm(forms.ModelForm):
     class Meta:
         model = ContactMessage
         fields = ['name', 'email', 'phone', 'message']
-
-class UserRegisterForm(UserCreationForm):
-    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Repetir contraseña', widget=forms.PasswordInput)
 
 class SocialLinkForm(forms.ModelForm):
     class Meta:
@@ -41,3 +37,13 @@ class AboutForm(forms.ModelForm):
     class Meta:
         model = About
         fields = ['title', 'description']
+        
+class UserRegisterForm(UserCreationForm):
+    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Repetir contraseña', widget=forms.PasswordInput)
+    
+class SignUpForm(UserCreationForm):
+    full_name = forms.CharField(max_length=150)
+    class Meta(UserCreationForm.Meta):
+        model = CustomUser
+        fields = ('username', 'full_name', 'email', 'password1', 'password2')
