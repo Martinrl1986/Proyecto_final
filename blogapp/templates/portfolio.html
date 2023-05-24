@@ -1,23 +1,108 @@
-{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-    <!-- Contenido específico de portfolio.html -->
-    <!-- Por ejemplo, puedes mostrar la información del portfolio -->
-    <h2>{{ portfolio.title }}</h2>
-    <p>{{ portfolio.description }}</p>
-    <!-- Iterate over portfolio items -->
-    {% for item in portfolio.items.all %}
-        <div>
-            <img src="{{ item.image.url }}" alt="{{ item.caption }}">
-            <p>{{ item.caption }}</p>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Mi Vista</title>
+
+  <!-- Custom fonts for this theme -->
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+  <!-- Theme CSS -->
+  <link href="{% static 'css/freelancer.min.css' %}" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg bg-secondary text-uppercase" id="mainNav">
+        <div class="container mt-1">
+          <a class="navbar-brand js-scroll-trigger" href="#page-top">Portfolio</a>
+          <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item mx-0 mx-lg-1">
+                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'base' %}">Inicio</a>
+              </li>
+              <li class="nav-item mx-0 mx-lg-1">
+                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'about' %}">About</a>
+              </li>
+              <li class="nav-item mx-0 mx-lg-1">
+                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'portfolio' %}">Portfolio</a>
+              </li>
+              <li class="nav-item mx-0 mx-lg-1">
+                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'search' %}">Search</a>
+              </li>
+              <li class="nav-item mx-0 mx-lg-1">
+                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'login' %}">Login</a>
+              </li>
+              <li class="nav-item mx-0 mx-lg-1">
+                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'signup' %}">Sign Up</a>
+              </li>
+              <li class="nav-item mx-0 mx-lg-1">
+                <form action="{% url 'search' %}" method="GET">
+                </form>         
+              </li>
+            </ul>
+          </div>
         </div>
-    {% endfor %}
-{% endblock %}
+      </nav>
 
-{% load my_templatetags %}
+      {% block content %}
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <h1>Mi Portfolio</h1>
+      
+            <p>¡Hola! Mi nombre es Martín y soy un apasionado desarrollador web. Durante mi periodo cursado en Codehouse, tuve la increíble oportunidad de adentrarme en el mundo del lenguaje de programación con Python. Desde el principio, me di cuenta de que estaba enamorado de la programación y decidí seguir aprendiendo y adquiriendo experiencia en el campo.</p>
+            <p>Siempre estoy buscando nuevos desafíos y oportunidades para crecer profesionalmente. Me fascina el diseño y estoy decidido a enfocar mis próximas metas hacia el mundo del diseño UX/UI. Creo que la combinación de habilidades técnicas y diseño creativo puede llevar a la creación de experiencias digitales excepcionales.</p>
+      
+            <h2>Experiencia y proyectos destacados</h2>
+            <ul>
+              <li>
+                <h3>Desarrollo de sitio web de comercio electrónico</h3>
+                <p>En este proyecto, tuve la responsabilidad de desarrollar un sitio web de comercio electrónico desde cero. Utilicé tecnologías como Python, Django, HTML, CSS y JavaScript para crear una plataforma segura y funcional que permitiera a los usuarios realizar compras en línea y gestionar sus pedidos.</p>
+              </li>
+              <li>
+                <h3>Creación de una aplicación de gestión de tareas</h3>
+                <p>Desarrollé una aplicación web que ayudaba a los usuarios a organizar y realizar un seguimiento de sus tareas diarias. Utilicé Django y JavaScript para crear una interfaz intuitiva y fácil de usar que permitía a los usuarios agregar, eliminar y marcar tareas como completadas.</p>
+              </li>
+              <li>
+                <h3>Diseño y desarrollo de un sitio web para una agencia de viajes</h3>
+                <p>En este proyecto, trabajé en estrecha colaboración con un equipo para diseñar y desarrollar un sitio web atractivo y funcional para una agencia de viajes. Utilicé HTML, CSS y Bootstrap para crear una interfaz visualmente atractiva y optimizada para dispositivos móviles, y JavaScript para implementar funcionalidades interactivas.</p>
+              </li>
+            </ul>
+      
+            <h2>Educación y formación</h2>
+            <ul>
+              <li>
+                <h3>Codehouse</h3>
+                <p>Curso intensivo de desarrollo web y programación en Python.</p>
+                <p>Año de finalización: 2022</p>
+              </li>
+              <li>
+                <h3>Universidad XYZ</h3>
+                <p>Licenciatura en Informática.</p>
+                <p>Año de finalización: 2021</p>
+              </li>
+            </ul>
+      
+            <h2>Habilidades técnicas</h2>
+            <ul>
+              <li>Python</li>
+              <li>Django</li>
+            </ul>
+          </div>
+        </div>
+    </div>
 
-{% for project in projects %}
-  <h2>{{ project.title }}</h2>
-  <p>Fecha de publicación: {{ project.published_date }}</p>
-  <p>{{ project.description }}</p>
-{% endfor %}
+    {% endblock %}
+      

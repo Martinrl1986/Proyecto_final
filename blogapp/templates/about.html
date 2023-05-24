@@ -1,13 +1,89 @@
-{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Mi Vista</title>
+
+  <!-- Custom fonts for this theme -->
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+  <!-- Theme CSS -->
+  <link href="{% static 'css/freelancer.min.css' %}" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg bg-secondary text-uppercase" id="mainNav">
+        <div class="container mt-1">
+          <a class="navbar-brand js-scroll-trigger" href="#page-top">About</a>
+          <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item mx-0 mx-lg-1">
+                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'base' %}">Inicio</a>
+              </li>
+              <li class="nav-item mx-0 mx-lg-1">
+                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'about' %}">About</a>
+              </li>
+              <li class="nav-item mx-0 mx-lg-1">
+                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'portfolio' %}">Portfolio</a>
+              </li>
+              <li class="nav-item mx-0 mx-lg-1">
+                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'search' %}">Search</a>
+              </li>
+              <li class="nav-item mx-0 mx-lg-1">
+                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'login' %}">Login</a>
+              </li>
+              <li class="nav-item mx-0 mx-lg-1">
+                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'signup' %}">Sign Up</a>
+              </li>
+              <li class="nav-item mx-0 mx-lg-1">
+                <form action="{% url 'search' %}" method="GET">
+                </form>         
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+      
+        <title>Freelancer - Start Bootstrap Theme</title>
+      
+        <!-- Custom fonts for this theme -->
+        <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+      
+        <!-- Theme CSS -->
+        <link href="{% static 'css/freelancer.min.css' %}" rel="stylesheet">
+      </head>
+      
+
+
 
 {% block content %}
-    <!-- Contenido específico de about.html -->
-    <!-- Por ejemplo, puedes mostrar la información sobre la empresa o el equipo -->
-    <h2>{{ about.title }}</h2>
-    <p>{{ about.description }}</p>
+
+  <h1>About Me</h1>
+  <p>¡Hola! Mi nombre es Martín. Durante mi periodo cursado en Codehouse he tenido la posibilidad de introducirme en el mundo del lenguaje de programación con Python. Desde ya, no tenia idea de que se tratba y consultando a amigos con conocimientos de programacion, me insentivaron a realizar el curso. He adquirido experiencia y estoy emocionado de compartir mis conocimientos contigo.</p>
+  <p>Siempre estoy buscando nuevos desafíos y oportunidades para aprender y crecer profesionalmente. Me encanta el diseño, ai que mis prximas metas apuntaran hacía el mundo del diseño UX/UI..</p>
+  <p>Asi como te he contado sobre mi, tu puedas hacer lo mismo dejando tu post, esto es de gran ayuda para aquellos que necesitan una motivación u orientación profesional. Muchas gracias</p>
+
 {% endblock %}
 
 {% load my_templatetags %}
 
-<h1>Acerca de mí</h1>
-<p>{{ about_me }}</p>

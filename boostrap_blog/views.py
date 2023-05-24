@@ -48,7 +48,7 @@ def search(request):
 
     search_form = SearchForm()
 
-    return render(request, 'search_results.html', {'results': results, 'search_form': search_form})
+    return render(request, 'search.html', {'results': results, 'search_form': search_form})
 
 def portfolio(request):
     # Lógica de la vista para portfolio.html

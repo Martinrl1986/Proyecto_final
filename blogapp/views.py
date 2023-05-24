@@ -1,23 +1,18 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from boostrap_blog.forms import UserRegisterForm
-from boostrap_blog.forms import PortfolioItem
-from boostrap_blog.forms import ContactMessage
-from boostrap_blog.forms import AboutForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from boostrap_blog.forms import UserRegisterForm, SearchForm, ContactMessageForm
+from blogapp.models import PortfolioItem, ContactMessage
 from django.contrib.auth import login, authenticate
-from blogapp.models import PortfolioItem
-from boostrap_blog.forms import SearchForm
-from boostrap_blog.forms import SignUpForm
 
 def base(request):
     if request.method == "POST":
         formulario = UserRegisterForm(request.POST)
-
         if formulario.is_valid():
             formulario.save()
             url_exitosa = reverse('base')
             return redirect(url_exitosa)
-    else:  # GET
+    else:
         formulario = UserRegisterForm()
     return render(
         request=request,
@@ -28,12 +23,11 @@ def base(request):
 def registro(request):
     if request.method == "POST":
         formulario = UserRegisterForm(request.POST)
-
         if formulario.is_valid():
             formulario.save()
             url_exitosa = reverse('base')
             return redirect(url_exitosa)
-    else:  # GET
+    else:
         formulario = UserRegisterForm()
     return render(
         request=request,
@@ -50,57 +44,51 @@ def search(request):
 
     search_form = SearchForm()
 
-    return render(request, 'search_results.html', {'results': results, 'search_form': search_form})
+    return render(request, 'search.html', {'results': results, 'search_form': search_form})
 
 def portfolio(request):
-    # Lógica de la vista para portfolio.html
-    # Puedes obtener los objetos del modelo PortfolioItem y pasarlos al template
     portfolio_items = PortfolioItem.objects.all()
     return render(request, 'portfolio.html', {'portfolio_items': portfolio_items})
 
 def about(request):
-    # Lógica de la vista para about.html
     return render(request, 'about.html')
 
 def contact(request):
-    # Lógica de la vista para contact.html
     if request.method == 'POST':
-        # Si se envió un formulario de contacto
-        # Puedes procesar los datos del formulario y guardarlos en el modelo ContactMessage
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        phone = request.POST.get('phone')
-        message = request.POST.get('message')
-        contact_message = ContactMessage(name=name, email=email, phone=phone, message=message)
-        contact_message.save()
-        # Puedes realizar otras acciones, como enviar un correo electrónico de notificación, etc.
-        return render(request, 'contact.html', {'success_message': 'Message sent successfully!'})
+        form = ContactMessageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, 'contact.html', {'success_message': 'Message sent successfully!'})
     else:
-        return render(request, 'contact.html')
+        form = ContactMessageForm()
+    return render(request, 'contact.html', {'form': form})
 
 def signup(request):
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            return redirect('base')
+            return redirect('login')
     else:
-        form = SignUpForm()
+        form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
 def login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        # Obtener los datos del formulario de inicio de sesión
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        # Autenticar al usuario
         user = authenticate(request, username=username, password=password)
+        
         if user is not None:
+            # Iniciar sesión
             login(request, user)
-            return redirect('base')
+            return redirect('home')  # Redirigir a la página principal después del inicio de sesión exitoso
         else:
-            return render(request, 'login.html', {'error_message': 'Invalid username or password.'})
+            # Usuario no válido
+            return render(request, 'login.html', {'form': form, 'error_message': 'Invalid username or password.'})
     else:
-        return render(request, 'login.html')
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})

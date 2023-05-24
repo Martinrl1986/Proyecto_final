@@ -1,4 +1,10 @@
 {% extends 'base.html' %}
+<h1>Search(Busqueda)</h1>
+
+  <form method="GET" action="{% url 'search' %}">
+    <input type="text" name="query" placeholder="Buscar">
+    <button type="submit">Buscar</button>
+  </form>
 
 {% block content %}
 <h1>Resultados de búsqueda</h1>
@@ -10,3 +16,4 @@
     {% endfor %}
 </ul>
 {% endblock %}
+

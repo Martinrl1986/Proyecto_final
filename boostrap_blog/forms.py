@@ -39,11 +39,16 @@ class AboutForm(forms.ModelForm):
         fields = ['title', 'description']
         
 class UserRegisterForm(UserCreationForm):
-    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Repetir contraseña', widget=forms.PasswordInput)
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Repeat Password', widget=forms.PasswordInput)
     
 class SignUpForm(UserCreationForm):
-    full_name = forms.CharField(max_length=150)
+    
     class Meta(UserCreationForm.Meta):
         model = CustomUser
-        fields = ('username', 'full_name', 'email', 'password1', 'password2')
+        fields = ('username', 'email', 'password1', 'password2')
+        
+class CustomUserForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'email']
