@@ -4,6 +4,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from boostrap_blog.forms import UserRegisterForm, SearchForm, ContactMessageForm
 from blogapp.models import PortfolioItem, ContactMessage
 from django.contrib.auth import login, authenticate
+from django.http import HttpResponseRedirect
+
 
 def base(request):
     if request.method == "POST":
@@ -75,20 +77,16 @@ def signup(request):
 
 def login(request):
     if request.method == 'POST':
-        # Obtener los datos del formulario de inicio de sesión
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        
-        # Autenticar al usuario
+        username = request.POST['username']
+        password = request.POST['password']
         user = authenticate(request, username=username, password=password)
-        
         if user is not None:
-            # Iniciar sesión
             login(request, user)
-            return redirect('home')  # Redirigir a la página principal después del inicio de sesión exitoso
+            # Redirigir a la página de inicio o a otra página deseada
+            return HttpResponseRedirect('/home/')
         else:
-            # Usuario no válido
-            return render(request, 'login.html', {'form': form, 'error_message': 'Invalid username or password.'})
+            # El usuario no existe o las credenciales son incorrectas
+            return render(request, 'login.html', {'error': 'Credenciales inválidas'})
     else:
-        form = AuthenticationForm()
-    return render(request, 'login.html', {'form': form})
+        # Mostrar el formulario de inicio de sesión
+        return render(request, 'login.html')
