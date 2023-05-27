@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% load my_templatetags %}
+
+{% block content %}
+
+  <h1>Leave your interesting article here, commenting something about yourself</h1>
+  <br>
+  <h2>Article List</h2>
+  {% for article in articles %}
+    <h3>{{ article.title }}</h3>
+    <p>{{ article.subtitle }}</p>
+    <!-- Mostrar otros campos del artículo -->
+    <hr>
+  {% endfor %}
+  
+  <h2>Navigation</h2>
+  <select onchange="window.location.href=this.value">
+    <option value="">Select an option</option>
+    <option value="{% url 'article_edit' %}">Article Edit</option>
+    <option value="{% url 'article_confirm_delete' %}">Confirm Delete</option>
+    <option value="{% url 'article_delete' %}">Delete Article</option>
+  </select>
+  
+{% endblock %}

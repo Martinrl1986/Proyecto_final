@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% load my_templatetags %}
+
+{% block content %}
+  <div class="container">
+    <h2>¿Quieres borrar tu articulo?</h2>
+    <form method="post" action="{% url 'create_article' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Publicar">
+    </form>
+  </div>
+{% endblock %}

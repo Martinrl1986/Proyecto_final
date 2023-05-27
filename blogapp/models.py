@@ -1,6 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.auth.models import AbstractUser, Group, Permission, User
 from django.utils.translation import gettext_lazy as _
+from django.views.generic.edit import DeleteView
+from django.urls import reverse_lazy
 class PortfolioItem(models.Model):
     # Campos
     image = models.ImageField(upload_to='portfolio')
@@ -95,3 +97,27 @@ class CustomUserPermission(models.Model):
     class Meta:
         # Otras opciones de configuración del modelo
         pass
+    
+class Login(models.Model):
+    username = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
+    
+    
+    def __str__(self):
+        return self.username
+    
+class Article(models.Model):
+    title = models.CharField(max_length=200)
+    subtitle = models.CharField(max_length=200)
+    body = models.TextField()
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = date = models.DateTimeField()
+    last_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+    
+class ArticleDeleteView(DeleteView):
+    model = Article
+    success_url = reverse_lazy('articles')
+    template_name = 'article_confirm_delete.html'

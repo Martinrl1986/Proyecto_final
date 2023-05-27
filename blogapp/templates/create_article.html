@@ -1,0 +1,25 @@
+{% extends 'articles.html' %}
+
+{% load my_templatetags %}
+
+{% block content %}
+  <div class="container">
+    <h1>Leave your interesting article here, commenting something about yourself</h1>
+    <br>
+    <h3>Write Article</h3>
+    <form method="post" action="{% url 'create_article' %}">
+      {% csrf_token %}
+      <label for="title">Title:</label><br>
+      <textarea name="title" rows="2" cols="80" required></textarea><br><br>
+      <label for="subtitle">Subtitle:</label><br>
+      <textarea name="subtitle" rows="3" cols="80" required></textarea><br><br>
+      <label for="body">Body:</label><br>
+      <textarea name="body" rows="10" cols="80" required></textarea><br><br>
+      <label for="author">Author:</label><br>   
+      <input type="text" name="author" required><br><br>
+      <label for="date">Date:</label><br>
+      <input type="date" name="date" required><br><br>
+      <input type="submit" value="Publish">
+    </form>
+  </div>
+{% endblock %}

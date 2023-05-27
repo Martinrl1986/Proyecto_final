@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from blogapp.models import PortfolioItem, ContactMessage, SocialLink, SearchForm
 from blogapp.models import CustomUser
 from blogapp.models import About
+from blogapp.models import Article
 
 class PortfolioItemForm(forms.ModelForm):
     class Meta:
@@ -52,3 +53,14 @@ class CustomUserForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['username', 'email']
+        
+class ArticleForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = ['title', 'subtitle', 'body', 'author', 'date']
+        
+class ArticleDeleteForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = []
+        
