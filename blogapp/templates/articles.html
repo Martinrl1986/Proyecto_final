@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% load my_templatetags %}
 
 {% block content %}
@@ -13,7 +12,17 @@
     <!-- Mostrar otros campos del artículo -->
     <hr>
   {% endfor %}
-  
+
+  {% if create_mode %}
+    <h2>Created Articles</h2>
+    {% for created_article in created_articles %}
+      <h3>{{ created_article.title }}</h3>
+      <p>{{ created_article.subtitle }}</p>
+      <!-- Mostrar otros campos del artículo -->
+      <hr>
+    {% endfor %}
+  {% endif %}
+
   <h2>Navigation</h2>
   <select onchange="window.location.href=this.value">
     <option value="">Select an option</option>

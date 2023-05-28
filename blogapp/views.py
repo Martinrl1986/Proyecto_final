@@ -4,7 +4,6 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from boostrap_blog.forms import UserRegisterForm, SearchForm, ContactMessageForm
 from blogapp.models import PortfolioItem
 from django.contrib.auth import login, authenticate, logout
-from blogapp.models import Login
 from .models import Article
 from boostrap_blog.forms import ArticleForm
 from django.views.generic import DeleteView
@@ -75,7 +74,7 @@ def signup(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')
+            return redirect('base')
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
@@ -95,21 +94,29 @@ def login_view(request):
     else:
         return render(request, 'login.html')
     
+def logout_view(request):
+    logout(request)
+    return redirect('base')
+    
+def articles(request):
+    articles = Article.objects.all()
+    return render(request, 'articles.html', {'articles': articles})
+    
 def create_article(request):
     if request.method == 'POST':
         form = ArticleForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('articles')  # Redirigir a la vista de la lista de artículos    
+            return redirect('articles.html')  # Redirigir a la vista de la lista de artículos    
     else:
         form = ArticleForm()
-    return render(request, 'create_article.html', {'form': form})
+    return render(request, 'create_article.html', {'form': form, 'create_mode': True})
 
 def article_delete(request, id):
     article = get_object_or_404(Article, pk=id)
     if request.method == 'POST':
         article.delete()
-        return redirect('home')  # Redirige a la página de inicio después de eliminar el artículo
+        return redirect('articles.html')  # Redirige a la página de inicio después de eliminar el artículo
     return render(request, 'article_delete.html', {'article': article})
 
 def article_confirm_delete(request, article_id):
@@ -121,7 +128,6 @@ def article_confirm_delete(request, article_id):
         return redirect('articles.html')
 
     return render(request, 'article_confirm_delete.html', {'article': article})
-
 
 def article_edit(request):
     if request.method == 'POST':
@@ -139,18 +145,14 @@ class ArticleDeleteView(DeleteView):
     model = Article
     template_name = 'articles/article_confirm_delete.html'
     success_url = reverse_lazy('articles.html')
-
-def logout_view(request):
-    logout(request)
-    return redirect('base')
-
-def articles(request):
-    articles = Article.objects.all()
-    return render(request, 'articles.html', {'articles': articles})
-
+    
 def delete_view(request, id):
     article = get_object_or_404(Article, id=id)
     if request.method == 'POST':
         article.delete()
-        return redirect(reverse('articles'))  # Redirige a la vista de artículos
+        return redirect('articles.html')  # Redirige a la vista de artículos
     return render(request, 'articles/article_confirm_delete.html', {'article': article})
+
+
+
+
