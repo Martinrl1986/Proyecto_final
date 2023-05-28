@@ -118,7 +118,7 @@ def article_confirm_delete(request, article_id):
     if request.method == 'POST':
         # El usuario ha confirmado la eliminación del artículo
         article.delete()
-        return redirect('articles')
+        return redirect('articles.html')
 
     return render(request, 'article_confirm_delete.html', {'article': article})
 
@@ -152,5 +152,5 @@ def delete_view(request, id):
     article = get_object_or_404(Article, id=id)
     if request.method == 'POST':
         article.delete()
-        return redirect('articles.html')
+        return redirect(reverse('articles'))  # Redirige a la vista de artículos
     return render(request, 'articles/article_confirm_delete.html', {'article': article})
