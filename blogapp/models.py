@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser, Group, Permission, User
 from django.utils.translation import gettext_lazy as _
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
+from django import forms
+
 class PortfolioItem(models.Model):
     # Campos
     image = models.ImageField(upload_to='portfolio')
@@ -11,26 +13,6 @@ class PortfolioItem(models.Model):
 
     def __str__(self):
         return self.caption
-
-
-class ContactMessage(models.Model):
-    # Campos
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-    phone = models.CharField(max_length=20)
-    message = models.TextField()
-
-    def __str__(self):
-        return self.name
-
-
-class SocialLink(models.Model):
-    # Campos
-    name = models.CharField(max_length=50)
-    url = models.URLField()
-
-    def __str__(self):
-        return self.name
 
 class SearchForm(models.Model):
     query = models.CharField(max_length=200)
@@ -58,15 +40,6 @@ class About(models.Model):
         return self.title
 
 
-class Contact(models.Model):
-    # Campos
-    email = models.EmailField()
-    phone = models.CharField(max_length=20)
-    address = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.email
-    
 class CustomUser(AbstractUser):
     # Atributos adicionales para tu modelo CustomUser
 
@@ -106,17 +79,25 @@ class Login(models.Model):
     def __str__(self):
         return self.username
     
+from django.db import models
+
 class Article(models.Model):
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=200)
     body = models.TextField()
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = date = models.DateTimeField()
-    last_updated = models.DateTimeField(auto_now=True)
+    author = models.CharField(max_length=200)
+    date = models.DateField()
 
     def __str__(self):
         return self.title
-    
+
+class ArticleForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = ['title', 'subtitle', 'body', 'author', 'date']
+        widgets = {
+            'date': forms.DateInput(attrs={'readonly': 'readonly'})
+        }  
 class ArticleDeleteView(DeleteView):
     model = Article
     success_url = reverse_lazy('articles')

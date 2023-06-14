@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% load my_templatetags %}
+
+{% block content %}
+  <h1>{{ article.title }}</h1>
+  <p>{{ article.content }}</p>
+
+  <!-- Botón de edición -->
+  <a href="{% url 'articles:edit' article.id %}">Editar</a>
+
+  <!-- Formulario de eliminación -->
+  <form action="{% url 'articles:delete' article.id %}" method="post" id="delete-form">
+    {% csrf_token %}
+    <input type="submit" value="Eliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este artículo?')">
+  </form>
+
+  <!-- Script para enviar el formulario de eliminación mediante AJAX -->
+  <script>
+    document.getElementById('delete-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      if (confirm('¿Estás seguro de que deseas eliminar este artículo?')) {
+        var form = event.target;
+        var url = form.getAttribute('action');
+        var csrftoken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': csrftoken
+          },
+          body: 'csrfmiddlewaretoken=' + encodeURIComponent(csrftoken)
+        })
+        .then(function(response) {
+          if (response.ok) {
+            // Redireccionar a la página de lista de artículos o realizar alguna acción adicional
+            window.location.href = "{% url 'articles:list' %}";
+          } else {
+            alert('Se produjo un error al intentar eliminar el artículo.');
+          }
+        })
+        .catch(function(error) {
+          alert('Se produjo un error al intentar eliminar el artículo.');
+        });
+      }
+    });
+  </script>
+{% endblock %}

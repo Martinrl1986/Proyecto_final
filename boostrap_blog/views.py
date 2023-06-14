@@ -1,10 +1,14 @@
-from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse, reverse_lazy
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from boostrap_blog.forms import UserRegisterForm, SearchForm, ContactMessageForm
-from blogapp.models import PortfolioItem, ContactMessage
-from django.contrib.auth import login, authenticate
-from django.http import HttpResponseRedirect
+from boostrap_blog.forms import UserRegisterForm, SearchForm
+from blogapp.models import PortfolioItem
+from django.contrib.auth import login, authenticate, logout
+from .models import Article
+from boostrap_blog.forms import ArticleForm
+from django.views.generic import DeleteView
+
+
 
 
 def base(request):
@@ -55,27 +59,17 @@ def portfolio(request):
 def about(request):
     return render(request, 'about.html')
 
-def contact(request):
-    if request.method == 'POST':
-        form = ContactMessageForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return render(request, 'contact.html', {'success_message': 'Message sent successfully!'})
-    else:
-        form = ContactMessageForm()
-    return render(request, 'contact.html', {'form': form})
-
 def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')
+            return redirect('base')
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
-def login(request):
+def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -83,9 +77,65 @@ def login(request):
         if user is not None:
             login(request, user)
             # Redirige a la página de inicio o a cualquier otra página deseada
-            return redirect('home')
+            return redirect('base')
         else:
             error_message = "Invalid username or password."
             return render(request, 'login.html', {'error_message': error_message})
     else:
         return render(request, 'login.html')
+    
+def logout_view(request):
+    logout(request)
+    return redirect('base')
+    
+def articles(request):
+    articles = Article.objects.all()
+    return render(request, 'articles.html', {'articles': articles})
+
+def article_list(request):
+    articles = Article.objects.all()
+    return render(request, 'article_list.html', {'articles': articles})
+    
+def create_article(request):
+    if request.method == 'POST':
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('article_list')
+    else:
+        form = ArticleForm()
+    
+    return render(request, 'create_article.html', {'form': form})
+
+def article_delete(request, id):
+    article = get_object_or_404(Article, pk=id)
+    if request.method == 'POST':
+        article.delete()
+        return redirect('articles')
+    return render(request, 'article_delete.html', {'article': article})
+
+def article_confirm_delete(request, article_id):
+    article = get_object_or_404(Article, pk=article_id)
+    if request.method == 'POST':
+        article.delete()
+        return redirect('articles')
+    return render(request, 'article_confirm_delete.html', {'article': article})
+
+def article_edit(request):
+    if request.method == 'POST':
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            article = form.save()
+            # Obtener el pk del artículo guardado
+            pk = article.pk
+            edit_url = reverse('article_edit', kwargs={'pk': pk})
+            return redirect(edit_url)  # Redirige a la vista de edición del artículo
+    else:
+        form = ArticleForm()
+    return render(request, 'article_edit.html', {'form': form})
+class ArticleDeleteView(DeleteView):
+    model = Article
+    template_name = 'article_confirm_delete.html'
+    success_url = reverse_lazy('articles')
+    
+    

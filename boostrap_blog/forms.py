@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from blogapp.models import PortfolioItem, ContactMessage, SocialLink, SearchForm
+from blogapp.models import PortfolioItem, SearchForm
 from blogapp.models import CustomUser
 from blogapp.models import About
 from blogapp.models import Article
@@ -10,26 +10,10 @@ class PortfolioItemForm(forms.ModelForm):
         model = PortfolioItem
         fields = ['image', 'caption', 'target_modal']
         
-        
-class ContactMessageForm(forms.ModelForm):
-    class Meta:
-        model = ContactMessage
-        fields = ['name', 'email', 'phone', 'message']
-
-class SocialLinkForm(forms.ModelForm):
-    class Meta:
-        model = SocialLink
-        fields = ['name', 'url']
-
 class PortfolioItemForm(forms.ModelForm):
     class Meta:
         model = PortfolioItem
         fields = ('image', 'caption', 'target_modal')
-
-class ContactMessageForm(forms.ModelForm):
-    class Meta:
-        model = ContactMessage
-        fields = ('name', 'email', 'phone', 'message')
 
 class SearchForm(forms.Form):
     query = forms.CharField(max_length=200)

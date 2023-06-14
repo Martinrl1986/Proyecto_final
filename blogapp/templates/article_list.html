@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% load my_templatetags %}
+
+{% block content %}
+  <h2>Article List</h2>
+  {% for article in articles %}
+    <h3>{{ article.title }}</h3>
+    <p>{{ article.subtitle }}</p>
+    <p>{{ article.body }}</p>
+    <p>Author: {{ article.author }}</p>
+    <p>Date: {{ article.date }}</p>
+    <a href="{% url 'article_edit' pk=article.pk %}">Edit</a>
+    <a href="{% url 'article_delete' pk=article.pk %}">Delete</a>
+    <hr>
+  {% endfor %}
+{% endblock %}
