@@ -6,7 +6,7 @@ from blogapp.models import PortfolioItem, Article
 from django.contrib.auth import login, authenticate, logout
 from django.views.generic import DeleteView
 from django import forms
-
+from .models import Article
 
 
 def base(request):
@@ -136,5 +136,3 @@ class ArticleDeleteView(DeleteView):
     model = Article
     success_url = reverse_lazy('articles')
     template_name = 'article_confirm_delete.html'
-    
-    
