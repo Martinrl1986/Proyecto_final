@@ -1,13 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from boostrap_blog.forms import UserRegisterForm, SearchForm
-from blogapp.models import PortfolioItem
+from boostrap_blog.forms import UserRegisterForm, SearchForm, ArticleForm
+from blogapp.models import PortfolioItem, Article
 from django.contrib.auth import login, authenticate, logout
-from .models import Article
-from boostrap_blog.forms import ArticleForm
 from django.views.generic import DeleteView
-
+from django import forms
 
 
 
@@ -23,21 +21,6 @@ def base(request):
     return render(
         request=request,
         template_name='base.html',
-        context={'form': formulario},
-    )
-
-def registro(request):
-    if request.method == "POST":
-        formulario = UserRegisterForm(request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            url_exitosa = reverse('base')
-            return redirect(url_exitosa)
-    else:
-        formulario = UserRegisterForm()
-    return render(
-        request=request,
-        template_name='registro.html',
         context={'form': formulario},
     )
 
@@ -94,48 +77,56 @@ def articles(request):
 
 def article_list(request):
     articles = Article.objects.all()
-    return render(request, 'article_list.html', {'articles': articles})
+    context = {
+        'articles': articles
+    }
+    return render(request, 'article_list.html', context)
     
 def create_article(request):
     if request.method == 'POST':
         form = ArticleForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('article_list')
+            return redirect('articles')
     else:
         form = ArticleForm()
     
-    return render(request, 'create_article.html', {'form': form})
+    articles = Article.objects.all()
+    context = {
+        'form': form,
+        'articles': articles
+    }
+    return render(request, 'create_article.html', context)
 
-def article_delete(request, id):
-    article = get_object_or_404(Article, pk=id)
+def article_delete(request, article_id):
+    article = Article.objects.get(id=article_id)
     if request.method == 'POST':
         article.delete()
         return redirect('articles')
-    return render(request, 'article_delete.html', {'article': article})
+    
+    context = {
+        'article': article
+    }
+    return render(request, 'article_delete.html', context)
 
-def article_confirm_delete(request, article_id):
-    article = get_object_or_404(Article, pk=article_id)
+def article_edit(request, article_id):
+    article = Article.objects.get(id=article_id)
     if request.method == 'POST':
-        article.delete()
-        return redirect('articles')
-    return render(request, 'article_confirm_delete.html', {'article': article})
-
-def article_edit(request):
-    if request.method == 'POST':
-        form = ArticleForm(request.POST)
+        form = ArticleForm(request.POST, instance=article)
         if form.is_valid():
-            article = form.save()
-            # Obtener el pk del artículo guardado
-            pk = article.pk
-            edit_url = reverse('article_edit', kwargs={'pk': pk})
-            return redirect(edit_url)  # Redirige a la vista de edición del artículo
+            form.save()
+            return redirect('articles')
     else:
-        form = ArticleForm()
-    return render(request, 'article_edit.html', {'form': form})
+        form = ArticleForm(instance=article)
+    
+    context = {
+        'form': form,
+        'article': article
+    }
+    return render(request, 'article_edit.html', context)
 class ArticleDeleteView(DeleteView):
     model = Article
-    template_name = 'article_confirm_delete.html'
     success_url = reverse_lazy('articles')
+    template_name = 'article_confirm_delete.html'
     
     

@@ -87,52 +87,41 @@ def create_article(request):
         form = ArticleForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('articles')
+            return redirect('article_list')
     else:
         form = ArticleForm()
     
-    articles = Article.objects.all()
     context = {
-        'form': form,
-        'articles': articles
+        'form': form
     }
     return render(request, 'create_article.html', context)
 
-def article_delete(request, article_id):
-    article = Article.objects.get(id=article_id)
+def article_delete(request):
+    latest_article = Article.objects.latest('id')
+    
     if request.method == 'POST':
-        article.delete()
+        latest_article.delete()
         return redirect('articles')
     
     context = {
-        'article': article
+        'article': latest_article
     }
     return render(request, 'article_delete.html', context)
 
-def article_confirm_delete(request, article_id):
-    article = get_object_or_404(Article, pk=article_id)
-    if request.method == 'POST':
-        article.delete()
-        return redirect('articles')
-    return render(request, 'article_confirm_delete.html', {'article': article})
 
-
-def article_edit(request, article_id):
-    article = Article.objects.get(id=article_id)
+def article_edit(request):
+    latest_article = Article.objects.latest('id')
+    
     if request.method == 'POST':
-        form = ArticleForm(request.POST, instance=article)
+        form = ArticleForm(request.POST, instance=latest_article)
         if form.is_valid():
             form.save()
-            return redirect('articles')
+            return redirect('article_list')
     else:
-        form = ArticleForm(instance=article)
+        form = ArticleForm(instance=latest_article)
     
     context = {
         'form': form,
-        'article': article
+        'article': latest_article
     }
     return render(request, 'article_edit.html', context)
-class ArticleDeleteView(DeleteView):
-    model = Article
-    success_url = reverse_lazy('articles')
-    template_name = 'article_confirm_delete.html'
