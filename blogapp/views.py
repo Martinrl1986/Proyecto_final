@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from boostrap_blog.forms import UserRegisterForm, SearchForm, ArticleForm
 from blogapp.models import PortfolioItem, Article
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 from django.views.generic import DeleteView
 from django import forms
 from .models import Article
@@ -97,17 +98,16 @@ def create_article(request):
     return render(request, 'create_article.html', context)
 
 def article_delete(request):
-    latest_article = Article.objects.latest('id')
-    
     if request.method == 'POST':
-        latest_article.delete()
-        return redirect('articles')
-    
-    context = {
-        'article': latest_article
-    }
-    return render(request, 'article_delete.html', context)
+        article_id = request.POST.get('article_id')
+        article = get_object_or_404(Article, id=article_id, author=request.user)
+        article.delete()
 
+    articles = Article.objects.filter(author=request.user)
+    context = {
+        'articles': articles
+    }
+    return render(request, 'article_list.html', context)
 
 def article_edit(request):
     latest_article = Article.objects.latest('id')

@@ -98,35 +98,19 @@ def create_article(request):
     }
     return render(request, 'create_article.html', context)
 
-def article_delete(request, article_id):
-    article = Article.objects.get(id=article_id)
+def article_edit(request):
     if request.method == 'POST':
-        article.delete()
-        return redirect('articles')
-    
-    context = {
-        'article': article
-    }
-    return render(request, 'article_delete.html', context)
-
-def article_edit(request, article_id):
-    article = Article.objects.get(id=article_id)
-    if request.method == 'POST':
-        form = ArticleForm(request.POST, instance=article)
+        form = ArticleForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('articles')
     else:
-        form = ArticleForm(instance=article)
+        form = ArticleForm()
     
     context = {
         'form': form,
-        'article': article
     }
     return render(request, 'article_edit.html', context)
-class ArticleDeleteView(DeleteView):
-    model = Article
-    success_url = reverse_lazy('articles')
-    template_name = 'article_confirm_delete.html'
+
     
     
